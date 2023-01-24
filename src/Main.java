@@ -1,5 +1,5 @@
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -15,8 +15,26 @@ public class Main {
                     Education.values()[new Random().nextInt(Education.values().length)]
             ));
         }
-        persons.stream()
-                .filter(x -> x < 18)
-                .count();
+
+        int count = (int) persons.stream()
+               .filter(x -> x.getAge() < 18)
+               .count();
+        System.out.println(count);
+
+        List<String> list1 = persons.stream()
+                .filter(x -> x.getSex() == Sex.MAN && x.getAge() > 18 && x.getAge() < 27)
+                .map(Person::getFamily)
+                .collect(Collectors.toList());
+        System.out.println(list1);
+
+        List<String> list2 = persons.stream()
+                .filter(x -> x.getAge() > 18 && (x.getSex() == Sex.WOMAN && x.getAge() < 60) || (x.getSex() == Sex.MAN && x.getAge() < 65))
+                .filter(x -> x.getEducation() == Education.HIGHER)
+                .map(Person::getFamily)
+                .sorted(Comparator.naturalOrder())
+                .collect(Collectors.toList());
+        System.out.println(list2);
+
+
     }
 }
